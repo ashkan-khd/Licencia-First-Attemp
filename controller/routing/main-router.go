@@ -1,18 +1,24 @@
 package routing
 
-import "github.com/gin-gonic/gin"
+import (
+	"Licencia-First-Attempt/controller/control"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Listener interface {
 	Listen() error
 }
 
 type router struct {
-	port   string
-	server *gin.Engine
+	port       string
+	server     *gin.Engine
+	controller *control.Control
 }
 
 func NewRouter(port string) Listener {
-	var listener Listener = &router{port, gin.New()}
+
+	var listener Listener = &router{port, gin.New(), control.NewControl()}
 	return listener
 }
 

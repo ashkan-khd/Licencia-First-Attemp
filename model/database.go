@@ -1,17 +1,39 @@
 package model
 
-import "github.com/go-pg/pg"
+import (
+	"Licencia-First-Attempt/model/existence"
 
-type database struct {
+	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/orm"
+)
+
+type Database struct {
 	db *pg.DB
 }
 
-func NewDb() *database {
+func NewDb() *Database {
+	dbc := dbConnection{
+		username: "postgres",
+		password: "mbsoli1743399413",
+	}
 	db := pg.Connect(&pg.Options{
 		Addr:     ":5432",
-		User:     "ashka",
-		Password: "a124578",
+		User:     dbc.username,
+		Password: dbc.password,
 		Database: "Licencia-First",
 	})
-	return &database{db}
+	return &Database{db}
+}
+
+type dbConnection struct {
+	username string
+	password string
+}
+
+func (db *Database) InitEmployerTable() error {
+	options := orm.CreateTableOptions{
+		IfNotExists: true,
+	}
+	err := db.db.CreateTable(&existence.Employer{}, options)
+	return err
 }
