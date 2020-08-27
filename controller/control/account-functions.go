@@ -1,14 +1,13 @@
-package utils
+package control
 
 import (
-	"Licencia-First-Attempt/controller/control"
 	"Licencia-First-Attempt/model/existence"
 	"errors"
 )
 
 func RegisterEmployer(emp existence.Employer) error {
-	if !control.DB.DoesEmployerExist(emp.Username) {
-		return control.DB.InsertEmployer(emp)
+	if !DB.DoesEmployerExist(emp.Username) {
+		return DB.InsertEmployer(emp)
 	}
 	return errors.New("duplicate username: " + emp.Username)
 }

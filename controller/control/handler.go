@@ -1,7 +1,6 @@
 package control
 
 import (
-	"Licencia-First-Attempt/controller/control/utils"
 	"Licencia-First-Attempt/model/database"
 	"Licencia-First-Attempt/model/existence"
 	"errors"
@@ -22,7 +21,13 @@ func NewControl() *Control {
 	return &Control{}
 }
 
-//QUERIES : "account-type"
+/*
+json{
+username
+password
+}
+QUERIES : "account-type"
+*/
 func (controller *Control) Register(ctx *gin.Context) error {
 	accountType := ctx.Query("account-type")
 	if accountType == "employer" {
@@ -30,7 +35,7 @@ func (controller *Control) Register(ctx *gin.Context) error {
 		if err := ctx.ShouldBindJSON(&employer); err != nil {
 			return err
 		}
-		return utils.RegisterEmployer(employer)
+		return RegisterEmployer(employer)
 	} else if accountType == "freelancer" {
 		//TODO
 	} else {

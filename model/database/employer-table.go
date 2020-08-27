@@ -1,6 +1,8 @@
 package database
 
-import "Licencia-First-Attempt/model/existence"
+import (
+	"Licencia-First-Attempt/model/existence"
+)
 
 func (db Database) DoesEmployerExist(username string) bool {
 	resultSet := &[]existence.Employer{}
@@ -9,6 +11,6 @@ func (db Database) DoesEmployerExist(username string) bool {
 }
 
 func (db *Database) InsertEmployer(emp existence.Employer) error {
-	_, err := db.db.Model(emp).Insert()
+	_, err := db.db.Model(&emp).Insert()
 	return err
 }
