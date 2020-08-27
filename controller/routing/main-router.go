@@ -24,7 +24,7 @@ func NewRouter(port string) Listener {
 
 func (router *router) Listen() error {
 	router.server.POST("/register", func(context *gin.Context) {
-
+		err := router.controller.Register(context)
 	})
 
 	router.server.Run(":" + router.port)
