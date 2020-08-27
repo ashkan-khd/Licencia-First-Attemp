@@ -15,7 +15,10 @@ var DB *database.Database
 
 func NewControl() *Control {
 	DB = database.NewDb()
-	DB.Initialize()
+	err := DB.Initialize()
+	if err != nil {
+		panic(err)
+	}
 	return &Control{}
 }
 
