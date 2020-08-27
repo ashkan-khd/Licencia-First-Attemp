@@ -7,15 +7,23 @@ import (
 	"github.com/go-pg/pg/orm"
 )
 
+var (
+	dbc = dbConnection{
+		username: "ashka",
+		password: "a124578",
+	}
+)
+
+type dbConnection struct {
+	username string
+	password string
+}
+
 type Database struct {
 	db *pg.DB
 }
 
 func NewDb() *Database {
-	dbc := dbConnection{
-		username: "postgres",
-		password: "mbsoli1743399413",
-	}
 	db := pg.Connect(&pg.Options{
 		Addr:     ":5432",
 		User:     dbc.username,
@@ -25,13 +33,8 @@ func NewDb() *Database {
 	return &Database{db}
 }
 
-type dbConnection struct {
-	username string
-	password string
-}
-
 func (db *Database) InitEmployerTable() error {
-	options := orm.CreateTableOptions{
+	options := &orm.CreateTableOptions{
 		IfNotExists: true,
 	}
 	err := db.db.CreateTable(&existence.Employer{}, options)
