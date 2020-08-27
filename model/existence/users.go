@@ -24,4 +24,5 @@ type Employer struct {
 	user
 	person
 	image
+	ProjectIDs []string `json:"project-ids"`
 }

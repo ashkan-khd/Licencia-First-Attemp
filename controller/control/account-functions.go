@@ -10,7 +10,7 @@ func RegisterEmployer(emp existence.Employer) error {
 		if !DB.DoesEmployerExistWithEmail(emp.Email) {
 			return DB.InsertEmployer(emp)
 		}
-		return errors.New("duplicate email: " + emp.Username)
+		return errors.New("duplicate email: " + emp.Email)
 	}
 	return errors.New("duplicate username: " + emp.Username)
 }

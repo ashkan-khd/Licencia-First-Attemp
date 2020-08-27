@@ -67,17 +67,18 @@ func (db *Database) Initialize() error {
 
 	defer func() {
 		db.meta.IsFirstInit = false
-		if err := db.updateFirstInit(); err != nil {
+		if err := db.updateDBMetadata(); err != nil {
 			panic(err)
 		}
 	}()
-
 	if err := db.initEmployerTable(); err != nil {
 		return err
 	}
-
 	if err := db.initFieldTable(); err != nil {
 		return err
+	}
+	if err := db.initProjectTable(); err != nil {
+		return nil
 	}
 
 	return nil
@@ -124,7 +125,7 @@ func (db *Database) addDefaultFields() error {
 	return nil
 }
 
-func (db *Database) updateFirstInit() error {
+func (db *Database) updateDBMetadata() error {
 	metadataPath := jsonsFolderPath + "db-metadata.json"
 
 	if err := os.Remove(metadataPath); err != nil {
@@ -145,4 +146,8 @@ func (db *Database) updateFirstInit() error {
 		return err
 	}
 	return nil
+}
+
+func (db *Database) initProjectTable() error {
+	return db.db.CreateTable(&existence.Project{}, options)
 }
