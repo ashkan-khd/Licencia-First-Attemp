@@ -16,7 +16,7 @@ func RespondRegister(context *gin.Context, err error) {
 		switch {
 		case strings.Contains(err.Error(), "invalid query: "):
 			status = http.StatusExpectationFailed
-		case strings.Contains(err.Error(), "duplicate username: "):
+		case strings.Contains(err.Error(), "duplicate username: "), strings.Contains(err.Error(), "duplicate email: "):
 			status = http.StatusBadRequest
 		default:
 			status = http.StatusInternalServerError
