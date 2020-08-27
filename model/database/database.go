@@ -12,7 +12,15 @@ var (
 		username: "ashka",
 		password: "a124578",
 	}
+
+	options = &orm.CreateTableOptions{
+		IfNotExists: true,
+	}
 )
+
+type Initializable interface {
+	Initialize() error
+}
 
 type dbConnection struct {
 	username string
@@ -33,10 +41,29 @@ func NewDb() *Database {
 	return &Database{db}
 }
 
-func (db *Database) InitEmployerTable() error {
-	options := &orm.CreateTableOptions{
-		IfNotExists: true,
+func (db *Database) Initialize() error {
+
+	if err := db.initEmployerTable(); err != nil {
+		return err
 	}
+
+	if err := db.initFieldTable(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (db *Database) initEmployerTable() error {
 	err := db.db.CreateTable(&existence.Employer{}, options)
 	return err
+}
+
+func (db *Database) initFieldTable() error {
+	err := db.db.CreateTable(&existence.Field{}, options)
+	return err
+}
+
+func (db *Database) addDefaultFields() error {
+	return nil
 }

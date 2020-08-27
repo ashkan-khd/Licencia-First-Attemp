@@ -15,9 +15,7 @@ var DB *database.Database
 
 func NewControl() *Control {
 	DB = database.NewDb()
-	if err := DB.InitEmployerTable(); err != nil {
-		panic(err)
-	}
+	DB.Initialize()
 	return &Control{}
 }
 
