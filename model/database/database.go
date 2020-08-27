@@ -10,10 +10,16 @@ import (
 	"github.com/go-pg/pg/orm"
 )
 
+const (
+	jsonsFolderPath = "model/database/jsons/"
+)
+
 var (
 	dbc = dbConnection{
-		username: "postgres",
-		password: "mbsoli1743399413",
+		username: "ashka",
+		password: "a124578",
+		/*		username: "postgres",
+				password: "mbsoli1743399413",*/
 	}
 
 	options = &orm.CreateTableOptions{
@@ -60,6 +66,7 @@ func NewDb() *Database {
 func (db *Database) Initialize() error {
 
 	defer func() {
+		db.meta.IsFirstInit = false
 		if err := db.updateFirstInit(); err != nil {
 			panic(err)
 		}
@@ -96,7 +103,8 @@ func (db *Database) initFieldTable() error {
 }
 
 func (db *Database) addDefaultFields() error {
-	bytes, err := ioutil.ReadFile("model/database/jsons/default-fields.json")
+	deafaultFieldsPath := jsonsFolderPath + "default-fields.json"
+	bytes, err := ioutil.ReadFile(deafaultFieldsPath)
 	if err != nil {
 		return err
 	}
@@ -117,26 +125,23 @@ func (db *Database) addDefaultFields() error {
 }
 
 func (db *Database) updateFirstInit() error {
+	metadataPath := jsonsFolderPath + "db-metadata.json"
 
-	if err := os.Remove("model/database/jsons/db-metadata.json"); err != nil {
+	if err := os.Remove(metadataPath); err != nil {
 		return nil
 	}
-
-	bytes, err := json.Marshal(db.meta)
-	if err != nil {
-		return err
-	}
-
-	file, err := os.Create("model/database/jsons/db-metadata.json")
-
-	if err != nil {
-		return err
-	}
-
-	if _, err := file.Write(bytes); err != nil {
-		return err
-	}
-	if err := file.Close(); err != nil {
+	if bytes, err := json.Marshal(db.meta); err == nil {
+		if file, err := os.Create(metadataPath); err == nil {
+			if _, err := file.Write(bytes); err != nil {
+				return err
+			}
+			if err := file.Close(); err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	} else {
 		return err
 	}
 	return nil
