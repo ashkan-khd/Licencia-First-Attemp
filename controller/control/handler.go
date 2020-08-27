@@ -24,6 +24,7 @@ func NewControl() *Control {
 /*
 json{
 username
+email
 password
 }
 QUERIES : "account-type"

@@ -4,9 +4,15 @@ import (
 	"Licencia-First-Attempt/model/existence"
 )
 
-func (db Database) DoesEmployerExist(username string) bool {
+func (db Database) DoesEmployerExistWithUsername(username string) bool {
 	resultSet := &[]existence.Employer{}
 	_ = db.db.Model(resultSet).Where("username = ?", username).Select()
+	return len(*resultSet) != 0
+}
+
+func (db *Database) DoesEmployerExistWithEmail(email string) bool {
+	resultSet := &[]existence.Employer{}
+	_ = db.db.Model(resultSet).Where("email = ?", email).Select()
 	return len(*resultSet) != 0
 }
 
