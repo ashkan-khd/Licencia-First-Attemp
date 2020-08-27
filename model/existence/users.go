@@ -1,8 +1,8 @@
 package existence
 
 type user struct {
-	Username    string `json:"username" pg:"username,pk,notnull"`
-	Password    string `json:"password" pg:"password,notnull"`
+	Username    string `json:"username" binding:"min=4,max=20" pg:"username,pk,notnull"`
+	Password    string `json:"password" binding:"min=6,max=20" pg:"password,notnull"`
 	Description string `json:"description" pg:"description"`
 }
 

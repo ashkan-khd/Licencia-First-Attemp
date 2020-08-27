@@ -1,7 +1,8 @@
 package control
 
 import (
-	"Licencia-First-Attempt/model"
+	"Licencia-First-Attempt/controller/control/utils"
+	"Licencia-First-Attempt/model/database"
 	"Licencia-First-Attempt/model/existence"
 	"errors"
 
@@ -9,12 +10,13 @@ import (
 )
 
 type Control struct {
-	db *model.Database
 }
 
+var DB *database.Database
+
 func NewControl() *Control {
-	db := model.NewDb()
-	if err := db.InitEmployerTable(); err != nil {
+	DB = database.NewDb()
+	if err := DB.InitEmployerTable(); err != nil {
 		panic(err)
 	}
 	return &Control{}
@@ -28,11 +30,11 @@ func (controller *Control) Register(ctx *gin.Context) error {
 		if err := ctx.ShouldBindJSON(&employer); err != nil {
 			return err
 		}
-
+		return utils.RegisterEmployer(employer)
 	} else if accountType == "freelancer" {
 		//TODO
 	} else {
-		return errors.New("Invalid query : " + accountType)
+		return errors.New("invalid query: " + accountType)
 	}
 	return nil
 }
