@@ -1,11 +1,12 @@
-package control
+package users
 
 import (
+	"Licencia-First-Attempt/model/database"
 	"Licencia-First-Attempt/model/existence"
 	"errors"
 )
 
-func RegisterEmployer(emp existence.Employer) error {
+func RegisterEmployer(emp existence.Employer, DB *database.Database) error {
 	if !DB.DoesEmployerExistWithUsername(emp.Username) {
 		if !DB.DoesEmployerExistWithEmail(emp.Email) {
 			return DB.InsertEmployer(emp)
